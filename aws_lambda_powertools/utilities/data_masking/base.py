@@ -65,12 +65,12 @@ class DataMasking:
         else:
             raise TypeError(
                 "Unsupported data type. The 'data' parameter must be a dictionary or a JSON string "
-                "representation of a dictionary."
+                "representation of a dictionary.",
             )
 
         for field in fields:
             if not isinstance(field, str):
-                field = json.dumps(field)
+                field = json.dumps(field)  # noqa
             keys = field.split(".")
 
             curr_dict = my_dict_parsed
