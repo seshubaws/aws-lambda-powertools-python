@@ -1,24 +1,23 @@
-from abc import abstractmethod
+from abc import ABC
 from collections.abc import Iterable
+from typing import Union
 
-from aws_lambda_powertools.shared.constants import DATA_MASKING_STRING
+from aws_lambda_powertools.utilities.data_masking.constants import DATA_MASKING_STRING
 
 
-class Provider:
+class BaseProvider(ABC):
     """
     When you try to create an instance of a subclass that does not implement the encrypt method,
     you will get a NotImplementedError with a message that says the method is not implemented:
     """
 
-    @abstractmethod
-    def encrypt(self, data):
+    def encrypt(self, data) -> Union[bytes, str]:
         raise NotImplementedError("Subclasses must implement encrypt()")
 
-    @abstractmethod
-    def decrypt(self, data):
+    def decrypt(self, data) -> any:
         raise NotImplementedError("Subclasses must implement decrypt()")
 
-    def mask(self, data):
+    def mask(self, data) -> str:
         if isinstance(data, (str, dict, bytes)):
             return DATA_MASKING_STRING
         elif isinstance(data, Iterable):
